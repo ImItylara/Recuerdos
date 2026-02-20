@@ -1,40 +1,47 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Nuestro Museo</title>
-
-<link rel="stylesheet" href="style.css">
-
+    <meta charset="UTF-8">
+    <title>Nuestra Historia</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
-<header>
-    <h1>Nuestro Museo</h1>
-    <p>Un espacio donde guardamos cada recuerdo, cada momento y cada parte de nuestra historia.</p>
-</header>
+<div class="stage">
 
-<section>
-    <h2>Nuestra Historia</h2>
-    <p>
-        Aquí comenzamos a escribir lo que algún día será nuestra historia favorita.
-        Cada palabra, cada risa y cada instante compartido vive aquí.
-    </p>
-</section>
+    <div class="curtain left"></div>
+    <div class="curtain right"></div>
 
-<section>
-    <h2>Galería de Recuerdos</h2>
-    <div class="gallery">
-        <img src="fotos/foto1.jpg" alt="Recuerdo 1">
-        <img src="fotos/foto2.jpg" alt="Recuerdo 2">
-        <img src="fotos/foto3.jpg" alt="Recuerdo 3">
+    <div class="stars"></div>
+    
+    <div class="scene scene1">
+    <h1 class="title">Nuestra Historia Empieza...</h1>
+    <h2 class="start">¿Empezamos?</h2>
+</div>
+
+<div class="scene scene2">
+
+    <div class="genesis-container">
+
+        <!-- LADO IZQUIERDO -->
+        <div class="genesis-left">
+            <h1 class="genesis-title">Génesis</h1>
+            <p class="genesis-text">
+                Hola mi amor lindo, que palabra tan hermosa genesis
+                el inicio de algo
+            </p>
+        </div>
+
+        <!-- LADO DERECHO -->
+        <div class="genesis-right">
+            <img src="assets/foto1.jpeg" alt="Nuestra foto">
+        </div>
+
     </div>
-</section>
 
-<footer>
-    Hecho con amor 🤍
-</footer>
+</div>
 
+<script src="script.js"></script>
 </body>
 </html>
