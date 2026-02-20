@@ -1,64 +1,272 @@
-body {
+* {
     margin: 0;
-    font-family: 'Georgia', serif;
-    background-color: #0f0f0f;
-    color: #f5f5f5;
-    text-align: center;
+    padding: 0;
+    box-sizing: border-box;
 }
 
-header {
-    padding: 80px 20px;
-    background: linear-gradient(to bottom, #000000, #1a1a1a);
+body {
+    background: black;
+    overflow: hidden;
+    font-family: serif;
 }
 
-h1 {
-    font-size: 3rem;
-    letter-spacing: 3px;
+.stage {
+    perspective: 1000px;
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    background: radial-gradient(circle at center, #111 0%, #000 70%);
 }
 
-p {
-    max-width: 600px;
-    margin: 20px auto;
-    line-height: 1.6;
-}
-
-section {
-    padding: 60px 20px;
-}
-
-.gallery {
+/* ESCENA */
+.scene {
+    position: absolute;
+    inset: 0;
     display: flex;
-    flex-wrap: wrap;
     justify-content: center;
-    gap: 20px;
+    align-items: center;
+    z-index: 1;
 }
 
-.gallery img {
-    width: 250px;
-    height: 300px;
-    object-fit: cover;
-    border-radius: 10px;
-    transition: 0.3s;
+.title {
+    color: #f5e6c8;
+    font-size: 3rem;
+    opacity: 0;
+    transform: translateZ(-800px) scale(0.3);
+    transition: all 2.5s cubic-bezier(.2,.8,.2,1);
+    text-align: center;
+    filter: blur(10px);
+}
+
+.show-title {
+    opacity: 1;
+    transform: translateZ(0px) scale(1);
+    filter: blur(0px);
+}
+
+/* CORTINAS */
+.curtain {
+    position: absolute;
+    top: 0;
+    width: 50%;
+    height: 100%;
+    z-index: 10;
+
+    background: url("assets/velvet.jpg");
+    background-size: 100px 100%;
+    background-repeat: repeat-x;
+
+    transition: transform 2.5s cubic-bezier(.7,0,.3,1);
+}
+
+/* IZQUIERDA */
+.left {
+    left: 0;
+}
+
+/* DERECHA */
+.right {
+    right: 0;
+}
+
+/* ANIMACIÓN */
+.stage.open .left {
+    transform: translateX(-100%);
+}
+
+.stage.open .right {
+    transform: translateX(100%);
+}
+
+.stage.open .title {
+    opacity: 1;
+    transform: translateZ(0px) scale(1);
+}
+
+/* CONTENEDOR ESTRELLAS */
+.stars {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+}
+
+/* ESTRELLA */
+.star {
+    position: absolute;
+    width: 3px;
+    height: 3px;
+    background: white;
+    border-radius: 50%;
+
+    box-shadow: 0 0 10px white, 0 0 20px white;
+
+    animation: shoot linear forwards;
+}
+
+/* COLA */
+.star::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: -60px;
+    width: 60px;
+    height: 2px;
+    background: linear-gradient(to left, white, transparent);
+    transform: translateY(-50%);
+}
+
+/* MOVIMIENTO RECTO */
+@keyframes shoot {
+    from {
+        transform: translateX(-100px);
+        opacity: 1;
+    }
+    to {
+        transform: translateX(110vw);
+        opacity: 0;
+    }
+}
+
+.start {
+    margin-top: 40px;
+    font-size: 2rem;
+    color: #fff3d6;
+    opacity: 0;
     cursor: pointer;
+    animation: pulse 2s infinite ease-in-out;
 }
 
-.gallery img:hover {
-    transform: scale(1.05);
+@keyframes pulse {
+    0% { 
+        text-shadow: 0 0 5px #fff3d6;
+        transform: scale(1);
+    }
+    50% { 
+        text-shadow: 0 0 25px #ffd27f;
+        transform: scale(1.08);
+    }
+    100% { 
+        text-shadow: 0 0 5px #fff3d6;
+        transform: scale(1);
+    }
 }
 
-footer {
-    padding: 30px;
-    font-size: 0.9rem;
-    opacity: 0.6;
+.show-start {
+    opacity: 1;
+    transition: opacity 1s ease;
 }
 
-@media (max-width: 600px) {
-    h1 {
-        font-size: 2rem;
+.scene {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    transition: transform 1.5s ease;
+}
+
+.scene2 {
+    transform: translateX(100%);
+}
+
+.stage.next .scene1 {
+    transform: translateX(-100%);
+}
+
+.stage.next .scene2 {
+    transform: translateX(0);
+}
+
+.genesis {
+    font-size: 4rem;
+    color: #e8ffe8;
+    position: relative;
+    z-index: 2;
+}
+
+.roots {
+    position: absolute;
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    border: 2px solid rgba(120,255,120,0.3);
+    animation: growRoots 3s ease forwards;
+    transform: scale(0);
+}
+
+@keyframes growRoots {
+    0% {
+        transform: scale(0);
+        opacity: 0;
+    }
+    100% {
+        transform: scale(1.5);
+        opacity: 1;
+    }
+}
+
+/* CONTENEDOR PRINCIPAL */
+.genesis-container {
+    width: 90%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 60px;
+    box-sizing: border-box;
+}
+
+/* IZQUIERDA */
+.genesis-left {
+    width: 50%;
+    color: #e8ffe8;
+}
+
+.genesis-title {
+    font-size: 3.5rem;
+    margin-bottom: 30px;
+}
+
+.genesis-text {
+    font-size: 1.2rem;
+    line-height: 1.8;
+    max-width: 500px;
+}
+
+/* DERECHA */
+.genesis-right {
+    width: 45%;
+    display: flex;
+    justify-content: center;
+}
+
+.genesis-right img {
+    max-width: 100%;
+    border-radius: 20px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+}
+
+@media (max-width: 900px) {
+
+    .genesis-container {
+        flex-direction: column;
+        text-align: center;
     }
 
-    .gallery img {
-        width: 90%;
-        height: auto;
+    .genesis-left,
+    .genesis-right {
+        width: 100%;
+    }
+
+    .genesis-title {
+        font-size: 2.5rem;
+    }
+
+    .genesis-text {
+        font-size: 1rem;
+        margin-bottom: 30px;
     }
 }
