@@ -7,7 +7,7 @@
 body {
     background: black;
     overflow: hidden;
-    font-family: serif;
+    font-family: 'Cormorant Garamond', serif;
 }
 
 .stage {
@@ -19,15 +19,168 @@ body {
     background: radial-gradient(circle at center, #111 0%, #000 70%);
 }
 
-/* ESCENA */
+/* ================= ESCENAS ================= */
+
 .scene {
     position: absolute;
     inset: 0;
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 1;
+    transition: transform 1.5s ease;
 }
+
+.scene1 {
+    flex-direction: column;
+    text-align: center;
+}
+
+.scene2,
+.scene3 {
+    transform: translateX(100%);
+}
+
+/* ========= ESCENA 4 (SALÓN) ========= */
+
+/* ESCENA 4 SIN DESLIZAMIENTO */
+
+.scene4 {
+    background: radial-gradient(circle at center, #fff8e8 0%, #f3e5c8 40%, #e8d2a0 100%);
+    position: relative;
+    flex-direction: column;
+    justify-content: flex-start;
+    padding-top: 80px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.8s ease;
+}
+
+.scene4::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 50% 30%, rgba(255,255,255,0.6), transparent 60%);
+    pointer-events: none;
+}
+
+.stage.next3 .scene3 {
+    display: none;
+}
+
+.stage.next3 .scene4 {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* ================= TRANSICIONES NORMALES ================= */
+
+.stage.next .scene1 {
+    transform: translateX(-100%);
+}
+
+.stage.next .scene2 {
+    transform: translateX(0);
+}
+
+.stage.next2 .scene2 {
+    transform: translateX(-100%);
+}
+
+.stage.next2 .scene3 {
+    transform: translateX(0);
+}
+
+/* ================= SALÓN ================= */
+
+.salon-title {
+    font-size: 3.5rem;
+    margin-bottom: 70px;
+    color: #6b0000;
+    text-shadow: 0 0 15px rgba(255,215,0,0.4);
+    letter-spacing: 2px;
+}
+
+.doors-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 60px;
+    width: 80%;
+}
+
+.door {
+    position: relative;
+    height: 230px;
+    background: linear-gradient(#a30000, #650000);
+    border-radius: 120px 120px 20px 20px;
+    border: 6px solid #d4af37;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #f8e7b5;
+    font-size: 1.4rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    box-shadow:
+        inset 0 0 25px rgba(0,0,0,0.4),
+        0 20px 40px rgba(0,0,0,0.3);
+    cursor: pointer;
+    transition: transform 0.5s ease, box-shadow 0.5s ease;
+    overflow: hidden;
+}
+
+.door:hover {
+    transform: scale(1.05);
+}
+
+.door::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to right, rgba(255,255,255,0.4), transparent 40%);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+
+.door:hover {
+    transform: perspective(800px) rotateY(-8deg) scale(1.05);
+    box-shadow:
+        inset 0 0 30px rgba(0,0,0,0.5),
+        0 25px 50px rgba(0,0,0,0.4),
+        0 0 20px rgba(255,215,0,0.6);
+}
+
+.door:hover::before {
+    opacity: 1;
+}
+
+.door::after {
+    content: "";
+    position: absolute;
+    bottom: -40px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 120%;
+    height: 80px;
+    background: radial-gradient(circle, rgba(255,215,0,0.5), transparent 70%);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+
+.door:hover::after {
+    opacity: 1;
+}
+
+@keyframes doorGlow {
+    0% { box-shadow: 0 20px 40px rgba(0,0,0,0.3); }
+    50% { box-shadow: 0 20px 50px rgba(212,175,55,0.5); }
+    100% { box-shadow: 0 20px 40px rgba(0,0,0,0.3); }
+}
+
+.door {
+    animation: doorGlow 4s infinite ease-in-out;
+}
+
+/* ================= TÍTULO INICIAL ================= */
 
 .title {
     color: #f5e6c8;
@@ -41,92 +194,8 @@ body {
 
 .show-title {
     opacity: 1;
-    transform: translateZ(0px) scale(1);
-    filter: blur(0px);
-}
-
-/* CORTINAS */
-.curtain {
-    position: absolute;
-    top: 0;
-    width: 50%;
-    height: 100%;
-    z-index: 10;
-
-    background: url("assets/velvet.jpg");
-    background-size: 100px 100%;
-    background-repeat: repeat-x;
-
-    transition: transform 2.5s cubic-bezier(.7,0,.3,1);
-}
-
-/* IZQUIERDA */
-.left {
-    left: 0;
-}
-
-/* DERECHA */
-.right {
-    right: 0;
-}
-
-/* ANIMACIÓN */
-.stage.open .left {
-    transform: translateX(-100%);
-}
-
-.stage.open .right {
-    transform: translateX(100%);
-}
-
-.stage.open .title {
-    opacity: 1;
-    transform: translateZ(0px) scale(1);
-}
-
-/* CONTENEDOR ESTRELLAS */
-.stars {
-    position: absolute;
-    inset: 0;
-    z-index: 0;
-    overflow: hidden;
-}
-
-/* ESTRELLA */
-.star {
-    position: absolute;
-    width: 3px;
-    height: 3px;
-    background: white;
-    border-radius: 50%;
-
-    box-shadow: 0 0 10px white, 0 0 20px white;
-
-    animation: shoot linear forwards;
-}
-
-/* COLA */
-.star::after {
-    content: "";
-    position: absolute;
-    top: 50%;
-    left: -60px;
-    width: 60px;
-    height: 2px;
-    background: linear-gradient(to left, white, transparent);
-    transform: translateY(-50%);
-}
-
-/* MOVIMIENTO RECTO */
-@keyframes shoot {
-    from {
-        transform: translateX(-100px);
-        opacity: 1;
-    }
-    to {
-        transform: translateX(110vw);
-        opacity: 0;
-    }
+    transform: translateZ(0) scale(1);
+    filter: blur(0);
 }
 
 .start {
@@ -138,135 +207,173 @@ body {
     animation: pulse 2s infinite ease-in-out;
 }
 
-@keyframes pulse {
-    0% { 
-        text-shadow: 0 0 5px #fff3d6;
-        transform: scale(1);
-    }
-    50% { 
-        text-shadow: 0 0 25px #ffd27f;
-        transform: scale(1.08);
-    }
-    100% { 
-        text-shadow: 0 0 5px #fff3d6;
-        transform: scale(1);
-    }
-}
-
 .show-start {
     opacity: 1;
     transition: opacity 1s ease;
 }
 
-.scene {
+/* ================= CORTINAS ================= */
+
+.curtain {
+    position: absolute;
+    top: 0;
+    width: 50%;
+    height: 100%;
+    z-index: 10;
+    background: url("assets/velvet.jpg");
+    background-size: 100px 100%;
+    background-repeat: repeat-x;
+    transition: transform 2.5s cubic-bezier(.7,0,.3,1);
+}
+
+.left { left: 0; }
+.right { right: 0; }
+
+.stage.open .left { transform: translateX(-100%); }
+.stage.open .right { transform: translateX(100%); }
+
+/* ================= ESTRELLAS ================= */
+
+.stars {
     position: absolute;
     inset: 0;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    transition: transform 1.5s ease;
+    z-index: 0;
+    overflow: hidden;
 }
 
-.scene2 {
-    transform: translateX(100%);
-}
-
-.stage.next .scene1 {
-    transform: translateX(-100%);
-}
-
-.stage.next .scene2 {
-    transform: translateX(0);
-}
-
-.genesis {
-    font-size: 4rem;
-    color: #e8ffe8;
-    position: relative;
-    z-index: 2;
-}
-
-.roots {
+.star {
     position: absolute;
-    width: 300px;
-    height: 300px;
+    width: 3px;
+    height: 3px;
+    background: white;
     border-radius: 50%;
-    border: 2px solid rgba(120,255,120,0.3);
-    animation: growRoots 3s ease forwards;
-    transform: scale(0);
+    box-shadow: 0 0 10px white, 0 0 20px white;
+    animation: shoot linear forwards;
 }
 
-@keyframes growRoots {
-    0% {
-        transform: scale(0);
-        opacity: 0;
-    }
-    100% {
-        transform: scale(1.5);
-        opacity: 1;
-    }
+.star::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: -60px;
+    width: 60px;
+    height: 2px;
+    background: linear-gradient(to left, white, transparent);
+    transform: translateY(-50%);
 }
 
-/* CONTENEDOR PRINCIPAL */
-.genesis-container {
+@keyframes shoot {
+    from { transform: translateX(-100px); opacity: 1; }
+    to { transform: translateX(110vw); opacity: 0; }
+}
+
+/* ================= CONTENEDORES ================= */
+
+.genesis-container,
+.hechizo-container {
     width: 90%;
     height: 100%;
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding: 60px;
-    box-sizing: border-box;
 }
 
-/* IZQUIERDA */
-.genesis-left {
+.genesis-left,
+.hechizo-left {
     width: 50%;
     color: #e8ffe8;
 }
 
-.genesis-title {
-    font-size: 3.5rem;
-    margin-bottom: 30px;
-}
-
-.genesis-text {
-    font-size: 1.2rem;
-    line-height: 1.8;
-    max-width: 500px;
-}
-
-/* DERECHA */
-.genesis-right {
+.genesis-right,
+.hechizo-right {
     width: 45%;
     display: flex;
     justify-content: center;
 }
 
-.genesis-right img {
+.genesis-right img,
+.hechizo-right img {
     max-width: 100%;
     border-radius: 20px;
     box-shadow: 0 20px 40px rgba(0,0,0,0.6);
 }
 
-@media (max-width: 900px) {
+.genesis-title,
+.hechizo-title {
+    font-size: 3rem;
+    margin-bottom: 30px;
+    color: #d8ffd8;
+}
 
-    .genesis-container {
+.genesis-text,
+.hechizo-text {
+    font-size: 1.2rem;
+    line-height: 1.8;
+    max-width: 500px;
+}
+
+/* ================= BOTONES ================= */
+
+.continue,
+.continue2 {
+    margin-top: 50px;
+    font-size: 1.8rem;
+    color: #d8ffd8;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 1s ease;
+    cursor: pointer;
+}
+
+.show-continue,
+.show-continue2 {
+    opacity: 1;
+    transform: translateY(0);
+    animation: pulseSoft 2s infinite ease-in-out;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.08); }
+    100% { transform: scale(1); }
+}
+
+@keyframes pulseSoft {
+    0% { opacity: 0.7; }
+    50% { opacity: 1; }
+    100% { opacity: 0.7; }
+}
+
+/* ================= RESPONSIVE ================= */
+
+@media (max-width: 900px) {
+    .genesis-container,
+    .hechizo-container {
         flex-direction: column;
         text-align: center;
     }
 
     .genesis-left,
-    .genesis-right {
+    .genesis-right,
+    .hechizo-left,
+    .hechizo-right {
         width: 100%;
     }
+}
 
-    .genesis-title {
-        font-size: 2.5rem;
-    }
+/* ================= FLASH CINEMATOGRÁFICO ================= */
 
-    .genesis-text {
-        font-size: 1rem;
-        margin-bottom: 30px;
-    }
+.flash {
+    position: absolute;
+    inset: 0;
+    background: white;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 1.6s ease-in-out;
+    z-index: 100;
+}
+
+.flash.active {
+    opacity: 1;
 }
